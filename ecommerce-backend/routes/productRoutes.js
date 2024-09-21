@@ -11,7 +11,6 @@ router.get('/', async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
-
 // Ruta POST pentru adăugarea unui nou produs
 router.post('/add', async (req, res) => {
   const product = new Product({
@@ -27,6 +26,19 @@ router.post('/add', async (req, res) => {
     res.status(201).json(newProduct);
   } catch (error) {
     res.status(400).json({ message: error.message });
+  }
+});
+
+router.delete('/delete/:id', async (req, res) => {
+  try {
+    //functia returneaza si produsul
+    const product = await Product.findByIdAndDelete(req.params.id);
+    if (!product) {
+      return res.status(404).json({ message: 'Produsul nu a fost găsit' });
+    }
+    res.json({ message: 'Produs șters cu succes' });
+  } catch (error) {
+    res.status(500).json({ message: 'Eroare la ștergerea produsului', error });
   }
 });
 
