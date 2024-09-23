@@ -29,6 +29,20 @@ router.post('/add', async (req, res) => {
   }
 });
 
+
+router.get('/:id', async (req, res) => {
+  try {
+    const product = await Product.findById(req.params.id);
+    if (!product) {
+      return res.status(404).json({ message: 'Produsul nu a fost găsit' });
+    }
+    res.status(200).json(product);
+  } catch (error) {
+    res.status(500).json({ message: 'Eroare server', error: error.message });
+  }
+});
+
+
 router.delete('/delete/:id', async (req, res) => {
   try {
     //functia returneaza si produsul
